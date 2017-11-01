@@ -1,4 +1,3 @@
-
 # serving files with listing directory
 # simple bottle application
 
@@ -36,7 +35,7 @@ def server_static(filepath):
         list_isfile = []
         # list of (<isfile>, <name>)
         for i in list_dir:
-        	list_isfile.append((os.path.isfile(os.path.join(ipath,i)),i))
+            list_isfile.append((os.path.isfile(os.path.join(ipath,i)),i))
         # sort - folders first then sorted by names
         list_isfile.sort(key = lambda x: str(x[0]) + x[1])
         items = ""
