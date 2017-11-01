@@ -41,12 +41,9 @@ def server_static(filepath):
         list_isfile.sort(key = lambda x: str(x[0]) + x[1])
         items = ""
         for item in list_isfile:
-            items += '<li class="{}">'.format("file" if item[0] else "folder")
-            items += ('<a href="%(full_path)s">%(name)s</a>' % {
-                'name': item[1],
-                'full_path': os.path.join(filepath, item[1])
-            })
-            items += ('</li>\n')
+            iclass = "file" if item[0] else "folder"
+            line = '<li class="{}"><a href="{}">{}</a></li>\n'
+            items += line.format(iclass, os.path.join(filepath, item[1]), item[1])
         return html_template.format(path=filepath, items=items)
     else:
         return static_file(filepath, root=ROOT)
