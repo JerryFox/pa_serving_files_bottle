@@ -1,4 +1,4 @@
-# serving files with listing directory
+# files serving with directory list
 # simple bottle application
 
 from bottle import default_app, route, static_file
