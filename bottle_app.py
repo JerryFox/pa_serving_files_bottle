@@ -4,10 +4,12 @@
 from bottle import default_app, route, static_file
 import os, os.path
 
-ROOT = "/home/vysoky/chess"
+ROOT = "/home/vysoky/seminar"   # where are files serving from 
+PATH_PREFIX = "/files"          # path prefix in browser
 
-@route('<filepath:path>')
-def server_static(filepath):
+@route(PATH_PREFIX)
+@route(PATH_PREFIX + '<filepath:path>')
+def server_static(filepath="/"):
     ipath = ROOT + filepath
     if os.path.isdir(ipath):
         list_dir = os.listdir(ipath)
@@ -42,7 +44,7 @@ def server_static(filepath):
         for item in list_isfile:
             iclass = "file" if item[0] else "folder"
             line = '<li class="{}"><a href="{}">{}</a></li>\n'
-            items += line.format(iclass, os.path.join(filepath, item[1]), item[1])
+            items += line.format(iclass,PATH_PREFIX + os.path.join(filepath, item[1]), item[1])
         return html_template.format(path=filepath, items=items)
     else:
         return static_file(filepath, root=ROOT)
