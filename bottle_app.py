@@ -4,15 +4,26 @@
 from bottle import default_app, route, static_file
 import os, os.path
 
-ROOT = "/home/vysoky/seminar"   # where are files serving from 
+"""
+ROOT = "/home/vysoky/seminar"   # where are files serving from
 PATH_PREFIX = "/files"          # path prefix in browser
+"""
+from config import ROOT, PATH_PREFIX, INTER_PATH, SHOW_HIDDEN
+
+def listdir_nohidden(path):
+    for f in os.listdir(path):
+        if not f.startswith('hidden'):
+            yield f
 
 @route(PATH_PREFIX)
 @route(PATH_PREFIX + '<filepath:path>')
 def server_static(filepath="/"):
     ipath = ROOT + filepath
     if os.path.isdir(ipath):
-        list_dir = os.listdir(ipath)
+        if SHOW_HIDDEN:
+            list_dir = os.listdir(ipath)
+        else:
+            list_dir = listdir_nohidden(ipath)
         html_template = """
 <html>
     <head>
@@ -44,11 +55,13 @@ def server_static(filepath="/"):
         for item in list_isfile:
             iclass = "file" if item[0] else "folder"
             line = '<li class="{}"><a href="{}">{}</a></li>\n'
-            items += line.format(iclass,PATH_PREFIX + os.path.join(filepath, item[1]), item[1])
+            items += line.format(iclass,INTER_PATH + PATH_PREFIX + os.path.join(filepath, item[1]), item[1])
         return html_template.format(path=filepath, items=items)
     else:
-        return static_file(filepath, root=ROOT)
-
+        if SHOW_HIDDEN or not os.path.basename(filepath).startswith("hidden"):
+            return static_file(filepath, root=ROOT)
+        else:
+            return "I can't it show..."
 
 
 application = default_app()
