@@ -8,7 +8,10 @@ import os, os.path
 ROOT = "/home/vysoky/seminar"   # where are files serving from
 PATH_PREFIX = "/files"          # path prefix in browser
 """
-from config import ROOT, PATH_PREFIX, INTER_PATH, SHOW_HIDDEN
+try: 
+    from config import ROOT, PATH_PREFIX, INTER_PATH, SHOW_HIDDEN
+except ImportError: 
+    from .config import ROOT, PATH_PREFIX, INTER_PATH, SHOW_HIDDEN
 
 def listdir_nohidden(path):
     for f in os.listdir(path):
