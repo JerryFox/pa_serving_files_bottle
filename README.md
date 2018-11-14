@@ -1,4 +1,4 @@
-# pa-serving-files-bottle
+# pa_serving_files_bottle
 Serving files over http on PythonAnywhere using Bottle framework. 
 
 PythonAnywhere - standard Bottle configuration, application in /home/<name>/mysite directory. 
